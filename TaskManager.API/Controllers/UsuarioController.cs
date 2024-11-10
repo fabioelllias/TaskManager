@@ -14,8 +14,9 @@ namespace TaskManager.API.Controllers
         }
 
         /// <summary>
-        /// Listagem de Projetos - listar todos os projetos do usuário
+        /// Listagem de Projetos
         /// </summary>
+        /// <remarks>Listar todos os projetos do usuário</remarks>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet, Route("{usuarioId}/projetos")]
@@ -25,8 +26,9 @@ namespace TaskManager.API.Controllers
         }
 
         /// <summary>
-        /// Relatórios de Desempenho - retornar média de tarefas de usuários em um período informado
+        /// Relatórios de Desempenho
         /// </summary>
+        /// <remarks>Retornar média de tarefas de usuários em um período informado</remarks>
         /// <param name="gerenteId"></param>
         /// <param name="dias"></param>
         /// <returns></returns>
@@ -37,8 +39,9 @@ namespace TaskManager.API.Controllers
         }
 
         /// <summary>
-        /// Comentários nas Tarefas - incluir comentário em uma tarefa
+        /// Comentários nas Tarefas
         /// </summary>
+        /// <remarks>Incluir comentário em uma tarefa</remarks>
         /// <param name="comentario"></param>
         /// <returns></returns>
         [HttpPatch, Route("{usuarioId}/tarefa/comentario")]
@@ -46,8 +49,5 @@ namespace TaskManager.API.Controllers
         {
             return Ok(comentario);
         }
-
-
-
     }
 }
