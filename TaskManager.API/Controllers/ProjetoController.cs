@@ -1,4 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
+using TaskManager.Application.Interfaces;
+using TaskManager.ViewModel.Projeto;
 
 namespace TaskManager.API.Controllers
 {
@@ -7,10 +9,12 @@ namespace TaskManager.API.Controllers
     public class ProjetoController : ControllerBase
     {
         private readonly ILogger<ProjetoController> _logger;
+        private readonly IProjetoApplication _projetoApplication;
 
-        public ProjetoController(ILogger<ProjetoController> logger)
+        public ProjetoController(ILogger<ProjetoController> logger, IProjetoApplication projetoApplication)
         {
             _logger = logger;
+            _projetoApplication = projetoApplication;
         }
 
         /// <summary>
@@ -22,7 +26,7 @@ namespace TaskManager.API.Controllers
         [HttpGet, Route("{projetoId}/tarefas")]
         public async Task<IActionResult> GetTarefas([FromRoute] int projetoId)
         {
-            return Ok(projetoId);
+            return Ok(_projetoApplication.TarefasPorProjeto(projetoId));
         }
 
         /// <summary>
@@ -32,9 +36,9 @@ namespace TaskManager.API.Controllers
         /// <param name="projetoViewModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> PostProjeto([FromBody] object projetoViewModel)
+        public async Task<IActionResult> PostProjeto([FromBody] ProjetoViewModel projetoViewModel)
         {
-            return Ok(projetoViewModel);
+            return Ok(_projetoApplication.CriarProjeto(projetoViewModel));
         }
 
         /// <summary>
@@ -45,9 +49,9 @@ namespace TaskManager.API.Controllers
         /// <param name="tarefaViewModel"></param>
         /// <returns></returns>
         [HttpPost, Route("{projetoId}/tarefa")]
-        public async Task<IActionResult> PostTarefa([FromRoute] int projetoId, [FromBody] object tarefaViewModel)
+        public async Task<IActionResult> PostTarefa([FromRoute] int projetoId, [FromBody] TarefaViewModel tarefaViewModel)
         {
-            return Ok(projetoId);
+            return Ok(_projetoApplication.CriarTarefa(projetoId, tarefaViewModel));
         }
 
         /// <summary>
@@ -59,9 +63,9 @@ namespace TaskManager.API.Controllers
         /// <param name="tarefaViewModel"></param>
         /// <returns></returns>
         [HttpPut, Route("{projetoId}/tarefa/{tarefaId}")]
-        public async Task<IActionResult> PutTarefa([FromRoute] int projetoId, [FromRoute] int tarefaId, [FromBody] object tarefaViewModel)
+        public async Task<IActionResult> PutTarefa([FromRoute] int projetoId, [FromRoute] int tarefaId, [FromBody] TarefaViewModel tarefaViewModel)
         {
-            return Ok(projetoId);
+            return Ok(_projetoApplication.AtualizarTarefa(projetoId, tarefaId, tarefaViewModel));
         }
 
         /// <summary>
@@ -73,7 +77,7 @@ namespace TaskManager.API.Controllers
         [HttpDelete, Route("{projetoId}")]
         public async Task<IActionResult> DeleteProjeto([FromRoute] int projetoId)
         {
-            return Ok(projetoId);
+            return Ok(_projetoApplication.ExcluirProjeto(projetoId));
         }
 
         /// <summary>
@@ -86,7 +90,7 @@ namespace TaskManager.API.Controllers
         [HttpDelete, Route("{projetoId}/tarefa/{tarefaId}")]
         public async Task<IActionResult> DeleteTarefa([FromRoute] int projetoId, [FromRoute] int tarefaId)
         {
-            return Ok(projetoId);
+            return Ok(_projetoApplication.ExcluirTarefa(projetoId, tarefaId));
         }
     }
 }

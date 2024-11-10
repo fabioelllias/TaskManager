@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using TaskManager.Application.Interfaces;
 
 namespace TaskManager.API.Controllers
 {
@@ -7,10 +8,12 @@ namespace TaskManager.API.Controllers
     public class UsuarioController : ControllerBase
     {
         private readonly ILogger<UsuarioController> _logger;
+        private readonly IUsuarioApplication _usuarioApplication;
 
-        public UsuarioController(ILogger<UsuarioController> logger)
+        public UsuarioController(ILogger<UsuarioController> logger, IUsuarioApplication usuarioApplication)
         {
             _logger = logger;
+            _usuarioApplication = usuarioApplication;
         }
 
         /// <summary>
@@ -22,7 +25,7 @@ namespace TaskManager.API.Controllers
         [HttpGet, Route("{usuarioId}/projetos")]
         public async Task<IActionResult> GetProjetos(int usuarioId)
         {
-            return Ok(usuarioId);       
+            return Ok(_usuarioApplication.ProjetosPorUsuario(usuarioId));
         }
 
         /// <summary>
@@ -35,7 +38,7 @@ namespace TaskManager.API.Controllers
         [HttpGet, Route("{gerenteId}/media-tarefas/{dias}")]
         public async Task<IActionResult> GetMediaTarefas(int gerenteId, int dias)
         {
-            return Ok(gerenteId);
+            return Ok(_usuarioApplication.DesempenhoNoPeriodo(gerenteId, dias));
         }
 
         /// <summary>
@@ -47,7 +50,7 @@ namespace TaskManager.API.Controllers
         [HttpPatch, Route("{usuarioId}/tarefa/comentario")]
         public async Task<IActionResult> PatchComentario([FromRoute] int usuarioId, [FromBody] string comentario)
         {
-            return Ok(comentario);
+            return Ok(_usuarioApplication.IncluirComentarioNaTarefa(usuarioId, comentario));
         }
     }
 }
