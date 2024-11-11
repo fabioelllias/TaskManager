@@ -6,6 +6,6 @@ namespace TaskManager.Application.Interfaces
     {
         ActionResult ProjetosPorUsuario(int usuarioId);
         ActionResult DesempenhoNoPeriodo(int gerenteId, int numeroDias);
-        ActionResult IncluirComentarioNaTarefa(int usuarioId, string comentario);
+        ActionResult IncluirComentarioNaTarefa(int usuarioId, int tarefaId, string comentario);
     }
 }

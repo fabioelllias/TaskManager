@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TaskManager.ViewModel.Projeto
+namespace TaskManager.ViewModel.Usuario
 {
-    public class TarefaViewModel
+    public class UsuarioViewModel
     {
     }
 }

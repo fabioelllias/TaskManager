@@ -49,7 +49,7 @@ namespace TaskManager.API.Controllers
         /// <param name="tarefaViewModel"></param>
         /// <returns></returns>
         [HttpPost, Route("{projetoId}/tarefa")]
-        public async Task<IActionResult> PostTarefa([FromRoute] int projetoId, [FromBody] TarefaViewModel tarefaViewModel)
+        public async Task<IActionResult> PostTarefa([FromRoute] int projetoId, [FromBody] TarefaAtualizarViewModel tarefaViewModel)
         {
             return Ok(_projetoApplication.CriarTarefa(projetoId, tarefaViewModel));
         }
@@ -63,7 +63,7 @@ namespace TaskManager.API.Controllers
         /// <param name="tarefaViewModel"></param>
         /// <returns></returns>
         [HttpPut, Route("{projetoId}/tarefa/{tarefaId}")]
-        public async Task<IActionResult> PutTarefa([FromRoute] int projetoId, [FromRoute] int tarefaId, [FromBody] TarefaViewModel tarefaViewModel)
+        public async Task<IActionResult> PutTarefa([FromRoute] int projetoId, [FromRoute] int tarefaId, [FromBody] TarefaAtualizarViewModel tarefaViewModel)
         {
             return Ok(_projetoApplication.AtualizarTarefa(projetoId, tarefaId, tarefaViewModel));
         }

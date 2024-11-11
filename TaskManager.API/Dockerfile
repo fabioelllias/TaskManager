@@ -12,8 +12,9 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["TaskManager.API/TaskManager.API.csproj", "TaskManager.API/"]
-#COPY ["TaskManager.Application/TaskManager.Application.csproj", "TaskManager.Application/"]
-#COPY ["TaskManager.ViewModel/TaskManager.ViewModel.csproj", "TaskManager.ViewModel/"]
+COPY ["TaskManager.Application/TaskManager.Application.csproj", "TaskManager.Application/"]
+COPY ["TaskManager.ViewModel/TaskManager.ViewModel.csproj", "TaskManager.ViewModel/"]
+COPY ["TaskManager.Domain/TaskManager.Domain.csproj", "TaskManager.Domain/"]
 RUN dotnet restore "./TaskManager.API/TaskManager.API.csproj"
 COPY . .
 WORKDIR "/src/TaskManager.API"

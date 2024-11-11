@@ -1,16 +1,19 @@
+using TaskManager.API.Filters;
 using TaskManager.Application;
 using TaskManager.Application.Interfaces;
+using TaskManager.Application.Validation;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRouting(options => options.LowercaseUrls = true);
 
+builder.Services.AddScoped<IValidator, BaseValidator>();
+
 builder.Services.AddScoped<IUsuarioApplication, UsuarioApplication>();
 builder.Services.AddScoped<IProjetoApplication, ProjetoApplication>();
 
-builder.Services.AddControllers();
-
+builder.Services.AddControllers(option => option.Filters.Add<ResultFilter>());
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
