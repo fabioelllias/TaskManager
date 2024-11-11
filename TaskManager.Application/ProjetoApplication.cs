@@ -1,5 +1,6 @@
 ﻿using TaskManager.Application.Interfaces;
 using TaskManager.Domain.Enuns;
+using TaskManager.Shared.Interfaces;
 using TaskManager.ViewModel.Projeto;
 
 namespace TaskManager.Application
@@ -10,7 +11,7 @@ namespace TaskManager.Application
 
         public ProjetoApplication(IValidator validator)
         {
-            _validator = validator;
+            _validator = validator;        
         }
 
         public ActionResult AtualizarTarefa(int projetoId, int tarefaId, TarefaAtualizarViewModel tarefaViewModel)

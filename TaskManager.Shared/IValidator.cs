@@ -1,4 +1,4 @@
-﻿namespace TaskManager.Application.Interfaces
+﻿namespace TaskManager.Shared.Interfaces
 {
     public interface IValidator
     {

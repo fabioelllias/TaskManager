@@ -5,11 +5,13 @@ VisualStudioVersion = 17.11.35327.3
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.API", "TaskManager.API\TaskManager.API.csproj", "{F5D0D298-04CF-4A77-920C-DB42A1026A41}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Application", "TaskManager.Application\TaskManager.Application.csproj", "{103A3BB0-0676-4C9B-990A-155875D2B697}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Application", "TaskManager.Application\TaskManager.Application.csproj", "{103A3BB0-0676-4C9B-990A-155875D2B697}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Domain", "TaskManager.Domain\TaskManager.Domain.csproj", "{28E76E6D-245E-4CCD-B71A-35FB71629AEA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Domain", "TaskManager.Domain\TaskManager.Domain.csproj", "{28E76E6D-245E-4CCD-B71A-35FB71629AEA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.ViewModel", "TaskManager.ViewModel\TaskManager.ViewModel.csproj", "{D58A815D-7E9E-441E-85C5-CA4A4D0BE068}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.ViewModel", "TaskManager.ViewModel\TaskManager.ViewModel.csproj", "{D58A815D-7E9E-441E-85C5-CA4A4D0BE068}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Shared", "TaskManager.Shared\TaskManager.Shared.csproj", "{94696D50-E8A1-4EE9-85D8-BAE07E9E622D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{D58A815D-7E9E-441E-85C5-CA4A4D0BE068}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D58A815D-7E9E-441E-85C5-CA4A4D0BE068}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D58A815D-7E9E-441E-85C5-CA4A4D0BE068}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94696D50-E8A1-4EE9-85D8-BAE07E9E622D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94696D50-E8A1-4EE9-85D8-BAE07E9E622D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94696D50-E8A1-4EE9-85D8-BAE07E9E622D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94696D50-E8A1-4EE9-85D8-BAE07E9E622D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

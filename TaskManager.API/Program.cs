@@ -1,7 +1,8 @@
 using TaskManager.API.Filters;
 using TaskManager.Application;
 using TaskManager.Application.Interfaces;
-using TaskManager.Application.Validation;
+using TaskManager.Shared;
+using TaskManager.Shared.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 

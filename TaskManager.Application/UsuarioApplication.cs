@@ -1,4 +1,5 @@
 ﻿using TaskManager.Application.Interfaces;
+using TaskManager.Shared.Interfaces;
 using TaskManager.ViewModel.Usuario;
 
 namespace TaskManager.Application

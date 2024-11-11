@@ -8,7 +8,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\TaskManager.Domain\TaskManager.Domain.csproj" />
+    <ProjectReference Include="..\TaskManager.Shared\TaskManager.Shared.csproj" />
     <ProjectReference Include="..\TaskManager.ViewModel\TaskManager.ViewModel.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Validation\" />
   </ItemGroup>
 
 </Project>

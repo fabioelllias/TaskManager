@@ -1,6 +1,6 @@
-﻿using TaskManager.Application.Interfaces;
+﻿using TaskManager.Shared.Interfaces;
 
-namespace TaskManager.Application.Validation
+namespace TaskManager.Shared
 {
     public class BaseValidator : IValidator
     {
