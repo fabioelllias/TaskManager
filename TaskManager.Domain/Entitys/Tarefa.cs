@@ -21,6 +21,7 @@ namespace TaskManager.Domain.Entitys
         public DateTime DataVencimento { get; private set; }
         public Status Status { get; private set; }
         public Prioridade Prioridade { get; private set; }
+        public Projeto Projeto { get; private set; }
 
         public IReadOnlyCollection<TarefaComentario> Comentarios => _comentarios.AsReadOnly();
         public IReadOnlyCollection<TarefaHistorico> Historico => _historico.AsReadOnly();

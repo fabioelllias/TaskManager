@@ -1,16 +1,21 @@
-﻿using System.Linq.Expressions;
-
-namespace TaskManager.Domain.Entitys
+﻿namespace TaskManager.Domain.Entitys
 {
     public class Projeto : BaseEntity
     {
         private readonly List<Tarefa> _tarefas = new();
+
         public Projeto()
         {
-
+            
         }
+        public Projeto(string titulo, Usuario responsavel)
+        {
+            Titulo = titulo;
+            Responsavel = responsavel;
+        }
+
         public string Titulo { get; private set; }
-        public Usuario AtribuidoA { get; private set; }
+        public Usuario Responsavel { get; private set; }
 
         public IReadOnlyCollection<Tarefa> Tarefas => _tarefas.AsReadOnly();
 
@@ -63,10 +68,10 @@ namespace TaskManager.Domain.Entitys
             entity.AdicionarHistorico(null);
         }
 
-        public static Expression<Func<Projeto, ICollection<Tarefa>>> TarefaMapping
-        {
-            get { return c => c._tarefas; }
-        }
+        //public static Expression<Func<Projeto, ICollection<Tarefa>>> TarefaMapping
+        //{
+        //    get { return c => c._tarefas; }
+        //}
 
     }
 }

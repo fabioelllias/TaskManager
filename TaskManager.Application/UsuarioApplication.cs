@@ -1,15 +1,18 @@
 ﻿using TaskManager.Application.Interfaces;
+using TaskManager.Domain.Entitys;
+using TaskManager.Infrastructure.Interfaces;
 using TaskManager.Shared.Interfaces;
-using TaskManager.ViewModel.Usuario;
 
 namespace TaskManager.Application
 {
     public class UsuarioApplication : IUsuarioApplication
     {
         private readonly IValidator _validator;
-        public UsuarioApplication(IValidator validator)
+        private readonly IRepository<Usuario> _usuarioRepository;
+        public UsuarioApplication(IValidator validator, IRepository<Usuario> usuarioRepository)
         {
             _validator = validator;
+            _usuarioRepository = usuarioRepository;
         }
         public ActionResult DesempenhoNoPeriodo(int gerenteId, int numeroDias)
         {
@@ -36,11 +39,21 @@ namespace TaskManager.Application
 
         public ActionResult ProjetosPorUsuario(int usuarioId)
         {
-            if (usuarioId == 0) _validator.AddError("usuarioId", "Usuário não informado.");
-            if (!_validator.IsValid)
+            if (usuarioId == 0)
+            {
+                _validator.AddError("usuarioId", "Usuário não informado.");
                 return ActionResult.Create(false, "", _validator.GetErrors());
+            }
 
-            return ActionResult.Create(true, string.Empty, new List<ProjetoViewModel>());
+            var usuario =_usuarioRepository.GetById(usuarioId);
+            if (usuario == null)
+            {
+                _validator.AddError("usuarioId", "Usuário não encontrado.");
+                return ActionResult.Create(false, "", _validator.GetErrors());
+            }
+
+            return ActionResult.Create(true, "", usuario.Projetos);
+            //return ActionResult.Create(true, string.Empty, new List<ProjetoViewModel>());
         }
     }
 }

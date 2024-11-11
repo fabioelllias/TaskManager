@@ -11,7 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Domain", "TaskM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.ViewModel", "TaskManager.ViewModel\TaskManager.ViewModel.csproj", "{D58A815D-7E9E-441E-85C5-CA4A4D0BE068}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Shared", "TaskManager.Shared\TaskManager.Shared.csproj", "{94696D50-E8A1-4EE9-85D8-BAE07E9E622D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaskManager.Shared", "TaskManager.Shared\TaskManager.Shared.csproj", "{94696D50-E8A1-4EE9-85D8-BAE07E9E622D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F6DB2401-2C70-4E46-AF9F-FF9079AE03E2}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{2616935E-9B3C-427B-841B-F4E930DED765}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskManager.Infrastructure", "TaskManager.Infrastructure\TaskManager.Infrastructure.csproj", "{3EC67B71-A468-45E0-8C06-C2AE95140F41}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +45,14 @@ Global
 		{94696D50-E8A1-4EE9-85D8-BAE07E9E622D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{94696D50-E8A1-4EE9-85D8-BAE07E9E622D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{94696D50-E8A1-4EE9-85D8-BAE07E9E622D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2616935E-9B3C-427B-841B-F4E930DED765}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2616935E-9B3C-427B-841B-F4E930DED765}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2616935E-9B3C-427B-841B-F4E930DED765}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2616935E-9B3C-427B-841B-F4E930DED765}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EC67B71-A468-45E0-8C06-C2AE95140F41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EC67B71-A468-45E0-8C06-C2AE95140F41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EC67B71-A468-45E0-8C06-C2AE95140F41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EC67B71-A468-45E0-8C06-C2AE95140F41}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

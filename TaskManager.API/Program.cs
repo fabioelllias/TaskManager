@@ -1,6 +1,10 @@
+using Microsoft.EntityFrameworkCore;
 using TaskManager.API.Filters;
 using TaskManager.Application;
 using TaskManager.Application.Interfaces;
+using TaskManager.Infrastructure.Context;
+using TaskManager.Infrastructure.Interfaces;
+using TaskManager.Infrastructure.Repository;
 using TaskManager.Shared;
 using TaskManager.Shared.Interfaces;
 
@@ -13,6 +17,11 @@ builder.Services.AddScoped<IValidator, BaseValidator>();
 
 builder.Services.AddScoped<IUsuarioApplication, UsuarioApplication>();
 builder.Services.AddScoped<IProjetoApplication, ProjetoApplication>();
+
+builder.Services.AddDbContext<TaskManagerContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("Connection")));
+builder.Services.AddScoped<IUnitOfWork>(provider => provider.GetService<TaskManagerContext>());
+builder.Services.AddScoped(typeof(IRepository<>), typeof(BaseRepository<>));
+
 
 builder.Services.AddControllers(option => option.Filters.Add<ResultFilter>());
 
@@ -37,6 +46,12 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
+    using var scope = app.Services.CreateScope();
+    var services = scope.ServiceProvider;
+    var context = services.GetRequiredService<TaskManagerContext>();
+    context.Database.EnsureCreated();
+    context.SeedData();
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }

@@ -13,9 +13,8 @@ ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["TaskManager.API/TaskManager.API.csproj", "TaskManager.API/"]
 COPY ["TaskManager.Application/TaskManager.Application.csproj", "TaskManager.Application/"]
-COPY ["TaskManager.Domain/TaskManager.Domain.csproj", "TaskManager.Domain/"]
-COPY ["TaskManager.Shared/TaskManager.Shared.csproj", "TaskManager.Shared/"]
 COPY ["TaskManager.ViewModel/TaskManager.ViewModel.csproj", "TaskManager.ViewModel/"]
+COPY ["TaskManager.Domain/TaskManager.Domain.csproj", "TaskManager.Domain/"]
 RUN dotnet restore "./TaskManager.API/TaskManager.API.csproj"
 COPY . .
 WORKDIR "/src/TaskManager.API"

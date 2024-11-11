@@ -5,20 +5,26 @@ namespace TaskManager.Domain.Entitys
 {
     public class BaseEntity : IValidator
     {
-        private readonly BaseEntity _baseEntity = new BaseEntity();
+        private Dictionary<string, string> _errors = new();
         public int Id { get; private set; }
+        public bool IsNew() { return Id <= 0; }
 
         [NotMapped]
-        public bool IsValid => _baseEntity.IsValid;
+        public bool IsValid => !_errors.Any();
 
         public void AddError(string key, string errorMessage)
         {
-            _baseEntity.AddError(key, errorMessage);
+            _errors.Add(key, errorMessage);
         }
 
         public Dictionary<string, string> GetErrors()
         {
-            return _baseEntity.GetErrors();
+            return _errors;
+        }
+
+        public void SetErros(Dictionary<string, string> errors)
+        {
+            _errors = errors;
         }
     }
 }
