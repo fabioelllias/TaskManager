@@ -14,6 +14,9 @@ namespace TaskManager.Domain.Entitys
         {
             Titulo = titulo;
             UsuarioId = usuarioId;
+
+            if (string.IsNullOrEmpty(Titulo))
+                AddError("Titulo", "Título não informado");
         }
 
         public string Titulo { get; private set; }
@@ -74,6 +77,11 @@ namespace TaskManager.Domain.Entitys
         {
             return _tarefas.Count(t => t.Status == Enuns.Status.Concluida && 
                                   t.DataVencimento >= DateTime.Now.AddDays(-periodoEmDias));
+        }
+
+        public bool PossuiTarefasPendentes()
+        {
+            return _tarefas.Any(item => item.Status == Enuns.Status.Pendente);
         }
 
         public static Expression<Func<Projeto, ICollection<Tarefa>>> TarefaMapping

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TaskManager.Domain.Entitys;
+﻿using TaskManager.Domain.Entitys;
 using TaskManager.ViewModel.Projeto;
 
 namespace TaskManager.Application.Mapper
@@ -12,7 +7,7 @@ namespace TaskManager.Application.Mapper
     {
         internal static List<ProjetoViewModel> MapToProjetoViewModelList(IReadOnlyCollection<Projeto> projetos)
         {
-            return projetos.Select(item => new ProjetoViewModel { Titulo = item.Titulo }).ToList();
+            return projetos.Select(item => new ProjetoViewModel { Id = item.Id, Titulo = item.Titulo, UsuarioId = item.UsuarioId }).ToList();
         }
     }
 }

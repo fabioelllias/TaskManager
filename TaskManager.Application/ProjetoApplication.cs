@@ -12,11 +12,13 @@ namespace TaskManager.Application
     {
         private readonly IValidator _validator;
         private readonly IRepository<Projeto> _projetoRepository;
+        private readonly IRepository<Usuario> _usuarioRepository;
 
-        public ProjetoApplication(IValidator validator, IRepository<Projeto> projetoRepository)
+        public ProjetoApplication(IValidator validator, IRepository<Projeto> projetoRepository, IRepository<Usuario> usuarioRepository)
         {
             _validator = validator;
             _projetoRepository = projetoRepository;
+            _usuarioRepository = usuarioRepository;
         }
 
         public ActionResult AtualizarTarefa(int projetoId, int tarefaId, TarefaAtualizarViewModel tarefaViewModel)
@@ -53,7 +55,18 @@ namespace TaskManager.Application
 
         public ActionResult CriarProjeto(ProjetoViewModel projetoViewModel)
         {
-            return ActionResult.Create(true, string.Empty, null);
+            var usuarioExiste = _usuarioRepository.GetAll().Any(item => item.Id == projetoViewModel.UsuarioId);
+            if (!usuarioExiste)
+                return ActionResult.Create(false, "Usuário não encontrado.", null);
+
+            var projeto = new Projeto(projetoViewModel.Titulo, projetoViewModel.UsuarioId);
+
+            if (!projeto.IsValid)
+                return ActionResult.Create(false, "Operação não concluída.", projeto.GetErrors());
+
+            _projetoRepository.Save(projeto);
+
+            return ActionResult.Create(true, string.Empty, ProjetoMapper.MapToProjetoViewModel(projeto));
         }
 
         public ActionResult CriarTarefa(int projetoId, TarefaAtualizarViewModel tarefaViewModel)
@@ -63,6 +76,15 @@ namespace TaskManager.Application
 
         public ActionResult ExcluirProjeto(int projetoId)
         {
+            var projeto = _projetoRepository.GetById(projetoId, "Tarefas");
+            if (projeto == null)
+                return ActionResult.Create(false, "Projeto não encontrado.", string.Empty);
+
+            if (projeto.PossuiTarefasPendentes())
+                return ActionResult.Create(false, "Exclusão não permitida.", "Projeto possui tarefas pendentes. Conclua ou exclua estas tarefas antes de remover o projeto");
+
+            _projetoRepository.Delete(projeto.Id);
+
             return ActionResult.Create(true, string.Empty, null);
         }
 
