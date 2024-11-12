@@ -63,10 +63,10 @@ namespace TaskManager.API.Controllers
         /// <param name="tarefaId"></param>
         /// <param name="tarefaViewModel"></param>
         /// <returns></returns>
-        [HttpPut, Route("{projetoId}/tarefa/{tarefaId}")]
-        public async Task<IActionResult> PutTarefa([FromRoute] int projetoId, [FromRoute] int tarefaId, [FromBody] TarefaAtualizarViewModel tarefaViewModel)
+        [HttpPut, Route("{projetoId}/usuario/{usuarioId}/tarefa/{tarefaId}")]
+        public async Task<IActionResult> PutTarefa([FromRoute] int projetoId, [FromRoute] int usuarioId, [FromRoute] int tarefaId, [FromBody] TarefaAtualizarViewModel tarefaViewModel)
         {
-            return Ok(_projetoApplication.AtualizarTarefa(projetoId, tarefaId, tarefaViewModel));
+            return Ok(_projetoApplication.AtualizarTarefa(projetoId, usuarioId, tarefaId, tarefaViewModel));
         }
 
         /// <summary>

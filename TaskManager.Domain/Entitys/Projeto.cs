@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+﻿using TaskManager.Domain.Enuns;
 
 namespace TaskManager.Domain.Entitys
 {
@@ -61,29 +61,6 @@ namespace TaskManager.Domain.Entitys
                 AddError(entity.GetErrors());
         }
 
-        public void AtualizarTarefa(Tarefa tarefa)
-        {
-            var entity = _tarefas.SingleOrDefault(item => item.Id == tarefa.Id);
-            if (entity == null)
-            {
-                AddError("Tarefa", "Tarefa não encontrada.");
-                return;
-            }
-
-            if (entity.Prioridade != tarefa.Prioridade)
-            {
-                AddError("tarefa.Prioridade", "Não é permitido alterar a prioridade de uma tarefa depois que ela foi criada.");
-                return;
-            }
-
-            entity.AddDescricao(tarefa.Descricao);
-            entity.AddDataVencimento(tarefa.DataVencimento);
-
-            //entity.GetErrors()
-
-            entity.AdicionarHistorico(null);
-        }
-
         public int TarefasConcluidas(int periodoEmDias)
         {
             return _tarefas.Count(t => t.Status == Enuns.Status.Concluida &&
@@ -107,10 +84,31 @@ namespace TaskManager.Domain.Entitys
             _tarefas.Remove(tarefa);
         }
 
-        public static Expression<Func<Projeto, ICollection<Tarefa>>> TarefaMapping
+        public void AtualizarTarefa(int tarefaId, string titulo, string descricao, DateTime dataVencimento, int status)
         {
-            get { return c => c._tarefas; }
+            var tarefa = _tarefas.SingleOrDefault(item => item.Id == tarefaId);
+            if (tarefa == null)
+            {
+                AddError("Tarefa", "Tarefa não encontrada.");
+                return;
+            }
+
+            if (!string.IsNullOrEmpty(titulo)) tarefa.AddTitulo(titulo);
+            if (!string.IsNullOrEmpty(descricao)) tarefa.AddDescricao(descricao);
+            if (dataVencimento > DateTime.MinValue) tarefa.AddDataVencimento(dataVencimento);
+            if (Enum.IsDefined(typeof(Status), status)) tarefa.AddStatus((Status)status);
         }
 
+        public void AdicionarHistorico(int tarefaId, int usuarioId, List<string> diferencas)
+        {
+            var tarefa = _tarefas.SingleOrDefault(item => item.Id == tarefaId);
+            foreach (var diferenca in diferencas)
+                tarefa.AdicionarHistorico(usuarioId, diferenca);
+        }
+
+        //public static Expression<Func<Projeto, ICollection<Tarefa>>> TarefaMapping
+        //{
+        //    get { return c => c._tarefas; }
+        //}
     }
 }

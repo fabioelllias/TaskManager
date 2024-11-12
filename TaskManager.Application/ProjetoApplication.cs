@@ -3,6 +3,7 @@ using TaskManager.Application.Mapper;
 using TaskManager.Domain.Entitys;
 using TaskManager.Domain.Enuns;
 using TaskManager.Infrastructure.Interfaces;
+using TaskManager.Shared;
 using TaskManager.Shared.Interfaces;
 using TaskManager.ViewModel.Projeto;
 using TaskManager.ViewModel.Tarefa;
@@ -22,22 +23,34 @@ namespace TaskManager.Application
             _usuarioRepository = usuarioRepository;
         }
 
-        public ActionResult AtualizarTarefa(int projetoId, int tarefaId, TarefaAtualizarViewModel tarefaViewModel)
+        public ActionResult AtualizarTarefa(int projetoId, int usuarioId, int tarefaId, TarefaAtualizarViewModel tarefaViewModel)
         {
-            if (projetoId == 0) _validator.AddError("projetoId", "Projeto não informado.");
-            if (tarefaId == 0) _validator.AddError("tarefaId", "Tarefa não informada.");
-            if (tarefaViewModel == null)
-                _validator.AddError("tarefaViewModel", "Informe os dados a serem atualizados na tarefa.");
-            else
-            {
-                if (string.IsNullOrEmpty(tarefaViewModel.Titulo)) _validator.AddError("tarefaViewModel.Titulo", "Titulo não informado.");
-                if (string.IsNullOrEmpty(tarefaViewModel.Descricao)) _validator.AddError("tarefaViewModel.Descricao", "Descrição não informada.");
-                if (tarefaViewModel.DataVencimento < DateTime.Now) _validator.AddError("tarefaViewModel.DataVencimento", "A data de vencimento não pode ser anterior ao dia corrente.");
-                if (!Enum.IsDefined(typeof(Prioridade), tarefaViewModel.Prioridade)) _validator.AddError("tarefaViewModel.Prioridade", "Prioridade informada inválida.");
-            }
+            var projeto = _projetoRepository.GetById(projetoId, "Tarefas");
+            if (projeto == null)
+                return ActionResult.Create(false, "Projeto não encontrado.", string.Empty);
 
-            if (!_validator.IsValid)
-                return ActionResult.Create(false, "", _validator.GetErrors());
+            if (tarefaViewModel == null)
+                return ActionResult.Create(false, "Informe os dados da tarefa a serem atualizados.", string.Empty);
+
+            var usuarioExiste = _usuarioRepository.GetAll().Any(item => item.Id == usuarioId);
+            if (!usuarioExiste)
+                return ActionResult.Create(false, "Usuário não encontrado.", null);
+
+            var tarefa = projeto.Tarefas.SingleOrDefault(item => item.Id == tarefaId);
+            if(tarefa == null)
+                return ActionResult.Create(false, "Tarefa não encontrada ou não pertence a este projeto.", null);
+
+            var tarefaCadastrada = ProjetoMapper.MapToTarefaAtualizarViewModel(tarefa);
+
+            var diferencas = Comparator.ObterDiferencas<TarefaAtualizarViewModel, TarefaAtualizarViewModel>(tarefaCadastrada , tarefaViewModel);
+
+            if (!diferencas.Any())
+                return ActionResult.Create(false, "Nenhuma informação da tarefa foi modificada.", null);
+
+            projeto.AtualizarTarefa(tarefaId, tarefaViewModel.Titulo, tarefaViewModel.Descricao, tarefaViewModel.DataVencimento, tarefaViewModel.Status);
+            projeto.AdicionarHistorico(tarefaId, usuarioId, diferencas);
+
+            _projetoRepository.Save(projeto);
 
             return ActionResult.Create(true, string.Empty, null);
         }

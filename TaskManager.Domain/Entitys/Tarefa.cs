@@ -36,7 +36,7 @@ namespace TaskManager.Domain.Entitys
 
         internal void AddDataVencimento(DateTime dataVencimento)
         {
-            if (dataVencimento < DateTime.Now)
+            if (dataVencimento == DateTime.MinValue)
             {
                 AddError("dataVencimento", "Data de vencimento não informada.");
                 return;
@@ -54,6 +54,16 @@ namespace TaskManager.Domain.Entitys
             this.Descricao = descricao;
         }
 
+        internal void AddStatus(Status status)
+        {
+            this.Status = status;
+        }
+
+        internal void AddTitulo(string titulo)
+        {
+            this.Titulo = titulo;
+        }
+
         internal void AdicionarComentario(string comentario, int usuario)
         {
             if (string.IsNullOrEmpty(comentario))
@@ -63,12 +73,12 @@ namespace TaskManager.Domain.Entitys
             }
 
             _comentarios.Add(new TarefaComentario(comentario, usuario));
-            _historico.Add(new TarefaHistorico($"Comentário incluido:{comentario}", usuario, DateTime.Now.ToUniversalTime()));
+            _historico.Add(new TarefaHistorico($"Propriedade: Comentario, Valor Incluido:{comentario}", usuario, DateTime.Now.ToUniversalTime()));
         }
 
-        internal void AdicionarHistorico(TarefaHistorico historico)
+        internal void AdicionarHistorico(int usuarioId, string alteracao)
         {
-            _historico.Add(historico);
+            _historico.Add(new TarefaHistorico(alteracao, usuarioId, DateTime.Now.ToUniversalTime()));
         }
     }
 }
