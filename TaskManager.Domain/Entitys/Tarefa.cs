@@ -7,13 +7,14 @@ namespace TaskManager.Domain.Entitys
         private readonly List<TarefaComentario> _comentarios = new();
         private readonly List<TarefaHistorico> _historico = new();
 
-        public Tarefa(string titulo, string descricao, DateTime dataVencimento, Status status, Prioridade prioridade)
+        public Tarefa(string titulo, string descricao, DateTime dataVencimento, Status status, Prioridade prioridade, int projetoId)
         {
             Titulo = titulo;
             Descricao = descricao;
             DataVencimento = dataVencimento;
             Status = status;
             Prioridade = prioridade;
+            ProjetoId = projetoId;
         }
 
         public string Titulo { get; private set; }
@@ -21,7 +22,7 @@ namespace TaskManager.Domain.Entitys
         public DateTime DataVencimento { get; private set; }
         public Status Status { get; private set; }
         public Prioridade Prioridade { get; private set; }
-        public Projeto Projeto { get; private set; }
+        public int ProjetoId { get; private set; }
 
         public IReadOnlyCollection<TarefaComentario> Comentarios => _comentarios.AsReadOnly();
         public IReadOnlyCollection<TarefaHistorico> Historico => _historico.AsReadOnly();

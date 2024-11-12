@@ -71,13 +71,18 @@ namespace TaskManager.Infrastructure.Context
                 SaveChanges();
             }
 
-            //if (!Tarefas.Any())
-            //{
-            //    var tarefaFaker = new AutoFaker<Tarefa>("pt_BR");
-            //    var tarefas = tarefaFaker.Generate(10);
-            //    Tarefas.AddRange(tarefas);
-            //    SaveChanges();
-            //}
+            if (!Tarefas.Any())
+            {
+                List<Tarefa> tarefas = new List<Tarefa>                    {
+                   new Tarefa("Desenvolver Feature A", "Implementar a funcionalidade A.", DateTime.Now.AddDays(7).ToUniversalTime(), Status.Pendente, Prioridade.Alta, Projetos.ElementAtOrDefault(0).Id),
+                   new Tarefa("Corrigir Bug B", "Corrigir o bug B encontrado no módulo X.", DateTime.Now.AddDays(2).ToUniversalTime(), Status.Concluida, Prioridade.Media,Projetos.ElementAtOrDefault(0).Id) ,
+                   new Tarefa("Refatorar Código C", "Refatorar o código do componente C.", DateTime.Now.AddMonths(1).ToUniversalTime(), Status.Pendente, Prioridade.Baixa,Projetos.ElementAtOrDefault(0).Id) ,
+                   new Tarefa("Escrever Documentação D", "Escrever a documentação para a API D.", DateTime.Now.AddDays(10).ToUniversalTime(), Status.Pendente, Prioridade.Media,Projetos.ElementAtOrDefault(1).Id) ,
+                   new Tarefa("Testar Funcionalidade E", "Realizar testes unitários na funcionalidade E.", DateTime.Now.AddDays(5).ToUniversalTime(), Status.Concluida, Prioridade.Alta,Projetos.ElementAtOrDefault(2).Id)
+                   };
+                Tarefas.AddRange(tarefas);
+                SaveChanges();
+            }
         }
     }
 }

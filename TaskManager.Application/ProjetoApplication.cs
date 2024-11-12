@@ -1,5 +1,8 @@
 ﻿using TaskManager.Application.Interfaces;
+using TaskManager.Application.Mapper;
+using TaskManager.Domain.Entitys;
 using TaskManager.Domain.Enuns;
+using TaskManager.Infrastructure.Interfaces;
 using TaskManager.Shared.Interfaces;
 using TaskManager.ViewModel.Projeto;
 
@@ -8,10 +11,12 @@ namespace TaskManager.Application
     public class ProjetoApplication : IProjetoApplication
     {
         private readonly IValidator _validator;
+        private readonly IRepository<Projeto> _projetoRepository;
 
-        public ProjetoApplication(IValidator validator)
+        public ProjetoApplication(IValidator validator, IRepository<Projeto> projetoRepository)
         {
-            _validator = validator;        
+            _validator = validator;
+            _projetoRepository = projetoRepository;
         }
 
         public ActionResult AtualizarTarefa(int projetoId, int tarefaId, TarefaAtualizarViewModel tarefaViewModel)
@@ -68,7 +73,11 @@ namespace TaskManager.Application
 
         public ActionResult TarefasPorProjeto(int projetoId)
         {
-            return ActionResult.Create(true, string.Empty, null);
+            var projeto = _projetoRepository.GetById(projetoId, "Tarefas");
+            if (projeto == null)
+                return ActionResult.Create(false, "Projeto não encontrado.", string.Empty);
+
+            return ActionResult.Create(true, string.Empty, ProjetoMapper.MapToTarefaViewModelList(projeto.Tarefas));
         }
     }
 }
