@@ -16,7 +16,7 @@ namespace TaskManager.Application
         public ActionResult DesempenhoNoPeriodo(int gerenteId, int numeroDias)
         {
 
-            var usuario = _usuarioRepository.GetById(gerenteId, "Projetos");
+            var usuario = _usuarioRepository.GetById(gerenteId, "Projetos", "Projetos.Tarefas");
             if (usuario == null)
                 return ActionResult.Create(false, "Usuário não encontrado.", null);
 
@@ -29,7 +29,7 @@ namespace TaskManager.Application
                 return ActionResult.Create(false, "Numero de dias deve ser maior ou igual a 1.", null);
 
 
-            var resultado = _usuarioRepository.GetAll()
+            var resultado = _usuarioRepository.GetAll("Projetos", "Projetos.Tarefas")
                 .Select(item => new { item.Nome, Quantidade = item.QuantidadeTarefasConcluidas(numeroDias) })
                 .ToList();
 

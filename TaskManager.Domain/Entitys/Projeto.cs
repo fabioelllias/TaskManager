@@ -81,6 +81,8 @@ namespace TaskManager.Domain.Entitys
                 return;
             }
 
+            tarefa.RemoverTodosComentarios();
+            tarefa.RemoverTodoHistorico();
             _tarefas.Remove(tarefa);
         }
 
@@ -105,10 +107,5 @@ namespace TaskManager.Domain.Entitys
             foreach (var diferenca in diferencas)
                 tarefa.AdicionarHistorico(usuarioId, diferenca);
         }
-
-        //public static Expression<Func<Projeto, ICollection<Tarefa>>> TarefaMapping
-        //{
-        //    get { return c => c._tarefas; }
-        //}
     }
 }

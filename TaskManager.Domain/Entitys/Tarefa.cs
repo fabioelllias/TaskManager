@@ -28,7 +28,7 @@ namespace TaskManager.Domain.Entitys
         public string Descricao { get; private set; }
         public DateTime DataVencimento { get; private set; }
         public Status Status { get; private set; }
-        public Prioridade Prioridade { get; private set; }
+        public Prioridade Prioridade { get; init; }
         public int ProjetoId { get; private set; }
 
         public IReadOnlyCollection<TarefaComentario> Comentarios => _comentarios.AsReadOnly();
@@ -56,11 +56,22 @@ namespace TaskManager.Domain.Entitys
 
         internal void AddStatus(Status status)
         {
+            if(!Enum.IsDefined(typeof(Status), status))
+            {
+                AddError("Status", "Status informado não é válido.");
+                return;
+            }
             this.Status = status;
         }
 
         internal void AddTitulo(string titulo)
         {
+            if (string.IsNullOrEmpty(titulo))
+            {
+                AddError("titulo", "Título da tarefa não informado.");
+                return;
+            }
+
             this.Titulo = titulo;
         }
 
@@ -79,6 +90,16 @@ namespace TaskManager.Domain.Entitys
         internal void AdicionarHistorico(int usuarioId, string alteracao)
         {
             _historico.Add(new TarefaHistorico(alteracao, usuarioId, DateTime.Now.ToUniversalTime()));
+        }
+
+        internal void RemoverTodoHistorico()
+        {
+            _historico.Clear();
+        }
+
+        internal void RemoverTodosComentarios()
+        {
+            _comentarios.Clear();
         }
     }
 }

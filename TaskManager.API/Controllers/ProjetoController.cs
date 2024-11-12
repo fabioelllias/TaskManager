@@ -37,7 +37,7 @@ namespace TaskManager.API.Controllers
         /// <param name="projetoViewModel"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> PostProjeto([FromBody] ProjetoViewModel projetoViewModel)
+        public async Task<IActionResult> PostProjeto([FromBody] ProjetoCriarViewModel projetoViewModel)
         {
             return Ok(_projetoApplication.CriarProjeto(projetoViewModel));
         }

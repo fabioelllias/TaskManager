@@ -1,5 +1,4 @@
-﻿using System.Linq.Expressions;
-using TaskManager.Domain.Enuns;
+﻿using TaskManager.Domain.Enuns;
 
 namespace TaskManager.Domain.Entitys
 {
@@ -20,10 +19,5 @@ namespace TaskManager.Domain.Entitys
         {
             return _projetos.Sum(p => p.TarefasConcluidas(periodoEmDias));
         }
-
-        //public static Expression<Func<Usuario, ICollection<Projeto>>> ProjetoMapping
-        //{
-        //    get { return c => c._projetos; }
-        //}
     }
 }

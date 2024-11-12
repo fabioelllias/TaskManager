@@ -16,6 +16,11 @@ namespace TaskManager.Application.Mapper
             return new TarefaAtualizarViewModel { DataVencimento = tarefa.DataVencimento, Descricao = tarefa.Descricao, Status = (int)tarefa.Status, Titulo = tarefa.Titulo };
         }
 
+        internal static TarefaNovaViewModel MapToTarefaNovaViewModel(Tarefa tarefa)
+        {
+            return new TarefaNovaViewModel { Id = tarefa.Id, Prioridade = tarefa.Prioridade.ToString(), DataVencimento = tarefa.DataVencimento, Descricao = tarefa.Descricao, Status = tarefa.Status.ToString(), Titulo = tarefa.Titulo };
+        }
+
         internal static ProjetoViewModel MapToProjetoViewModel(Projeto projeto)
         {
             return new ProjetoViewModel { Id = projeto.Id, Titulo = projeto.Titulo, UsuarioId = projeto.UsuarioId };

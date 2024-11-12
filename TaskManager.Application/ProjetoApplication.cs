@@ -29,17 +29,17 @@ namespace TaskManager.Application
             if (tarefaViewModel == null)
                 return ActionResult.Create(false, "Informe os dados da tarefa a serem atualizados.", string.Empty);
 
-            var usuarioExiste = _usuarioRepository.GetAll().Any(item => item.Id == usuarioId);
-            if (!usuarioExiste)
+            var usuario = _usuarioRepository.GetById(usuarioId);
+            if (usuario == null)
                 return ActionResult.Create(false, "Usuário não encontrado.", null);
 
             var tarefa = projeto.Tarefas.SingleOrDefault(item => item.Id == tarefaId);
-            if(tarefa == null)
+            if (tarefa == null)
                 return ActionResult.Create(false, "Tarefa não encontrada ou não pertence a este projeto.", null);
 
             var tarefaCadastrada = ProjetoMapper.MapToTarefaAtualizarViewModel(tarefa);
 
-            var diferencas = Comparator.ObterDiferencas<TarefaAtualizarViewModel, TarefaAtualizarViewModel>(tarefaCadastrada , tarefaViewModel);
+            var diferencas = Comparator.ObterDiferencas<TarefaAtualizarViewModel, TarefaAtualizarViewModel>(tarefaCadastrada, tarefaViewModel);
 
             if (!diferencas.Any())
                 return ActionResult.Create(false, "Nenhuma informação da tarefa foi modificada.", null);
@@ -49,7 +49,9 @@ namespace TaskManager.Application
 
             _projetoRepository.Save(projeto);
 
-            return ActionResult.Create(true, string.Empty, null);
+            var tarefaAtualizada = projeto.Tarefas.SingleOrDefault(item => item.Id == tarefaId);
+
+            return ActionResult.Create(true, string.Empty, ProjetoMapper.MapToTarefaAtualizarViewModel(tarefaAtualizada));
         }
 
         public ActionResult IncluirComentarioNaTarefa(int projetoId, int usuarioId, int tarefaId, string comentario)
@@ -67,12 +69,12 @@ namespace TaskManager.Application
             if (!projeto.IsValid)
                 return ActionResult.Create(false, "Operação não realizada.", projeto.GetErrors());
 
-            _projetoRepository.Save(projeto);          
+            _projetoRepository.Save(projeto);
 
             return ActionResult.Create(true, string.Empty, null);
         }
 
-        public ActionResult CriarProjeto(ProjetoViewModel projetoViewModel)
+        public ActionResult CriarProjeto(ProjetoCriarViewModel projetoViewModel)
         {
             var usuarioExiste = _usuarioRepository.GetAll().Any(item => item.Id == projetoViewModel.UsuarioId);
             if (!usuarioExiste)
@@ -94,13 +96,15 @@ namespace TaskManager.Application
             if (projeto == null)
                 return ActionResult.Create(false, "Projeto não encontrado.", string.Empty);
 
-            projeto.AdicionarTarefa(new Tarefa(
+            var novaTarefa = new Tarefa(
              tarefaViewModel.Titulo,
              tarefaViewModel.Descricao,
              tarefaViewModel.DataVencimento,
              (Status)tarefaViewModel.Status,
              (Prioridade)tarefaViewModel.Prioridade,
-             projeto.Id));
+             projeto.Id);
+
+            projeto.AdicionarTarefa(novaTarefa);
 
             if (!projeto.IsValid)
                 return ActionResult.Create(false, "Operação não concluída.", projeto.GetErrors());
@@ -108,7 +112,7 @@ namespace TaskManager.Application
 
             _projetoRepository.Save(projeto);
 
-            return ActionResult.Create(true, string.Empty, null);
+            return ActionResult.Create(true, string.Empty, ProjetoMapper.MapToTarefaNovaViewModel(novaTarefa));
         }
 
         public ActionResult ExcluirProjeto(int projetoId)
@@ -127,14 +131,14 @@ namespace TaskManager.Application
 
         public ActionResult ExcluirTarefa(int projetoId, int tarefaId)
         {
-            var projeto = _projetoRepository.GetById(projetoId, "Tarefas");
+            var projeto = _projetoRepository.GetById(projetoId, "Tarefas", "Tarefas.Comentarios", "Tarefas.Historico");
             if (projeto == null)
                 return ActionResult.Create(false, "Projeto não encontrado.", string.Empty);
 
             projeto.RemoverTarefa(tarefaId);
 
 
-            if(!projeto.IsValid)
+            if (!projeto.IsValid)
                 return ActionResult.Create(false, "Exclusão não permitida.", projeto.GetErrors());
 
             _projetoRepository.Save(projeto);
