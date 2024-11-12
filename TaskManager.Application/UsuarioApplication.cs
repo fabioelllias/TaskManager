@@ -1,4 +1,5 @@
 ﻿using TaskManager.Application.Interfaces;
+using TaskManager.Application.Mapper;
 using TaskManager.Domain.Entitys;
 using TaskManager.Infrastructure.Interfaces;
 using TaskManager.Shared.Interfaces;
@@ -16,44 +17,34 @@ namespace TaskManager.Application
         }
         public ActionResult DesempenhoNoPeriodo(int gerenteId, int numeroDias)
         {
-            if (gerenteId == 0) _validator.AddError("usuarioId", "Usuário não informado.");
-            if (numeroDias < 1) _validator.AddError("numeroDias", "Numero de dias deve ser maior ou igual a 1.");
 
-            if (!_validator.IsValid)
-                return ActionResult.Create(false, "", _validator.GetErrors());
+            var usuario = _usuarioRepository.GetById(gerenteId, "Projetos");
+            if (usuario == null)
+                return ActionResult.Create(false, "", "Usuário não encontrado.");
 
-            return ActionResult.Create(true, string.Empty, null);
-        }
 
-        public ActionResult IncluirComentarioNaTarefa(int usuarioId, int tarefaId, string comentario)
-        {
-            if (usuarioId == 0) _validator.AddError("usuarioId", "Usuário não informado.");
-            if (tarefaId == 0) _validator.AddError("tarefaId", "Tarefa não informada.");
-            if (string.IsNullOrEmpty(comentario)) _validator.AddError("comentario", "Comentário não informado.");
+            if (usuario.Funcao != Domain.Enuns.Funcao.Gerente)
+                return ActionResult.Create(false, "", "Funcionalidade acessível somente para usuarios com perfil Gerente");
 
-            if (!_validator.IsValid)
-                return ActionResult.Create(false, "", _validator.GetErrors());
 
-            return ActionResult.Create(true, string.Empty, null);
+            if (numeroDias < 1)
+                return ActionResult.Create(false, "", "Numero de dias deve ser maior ou igual a 1.");
+
+           
+            var resultado = _usuarioRepository.GetAll()
+                .Select(item => new { item.Nome, Quantidade = item.QuantidadeTarefasConcluidas(numeroDias) })
+                .ToList();
+
+            return ActionResult.Create(true, string.Empty, resultado);
         }
 
         public ActionResult ProjetosPorUsuario(int usuarioId)
         {
-            if (usuarioId == 0)
-            {
-                _validator.AddError("usuarioId", "Usuário não informado.");
-                return ActionResult.Create(false, "", _validator.GetErrors());
-            }
-
-            var usuario =_usuarioRepository.GetById(usuarioId);
+            var usuario = _usuarioRepository.GetById(usuarioId, "Projetos");
             if (usuario == null)
-            {
-                _validator.AddError("usuarioId", "Usuário não encontrado.");
-                return ActionResult.Create(false, "", _validator.GetErrors());
-            }
+                return ActionResult.Create(false, "", "Usuário não encontrado.");
 
-            return ActionResult.Create(true, "", usuario.Projetos);
-            //return ActionResult.Create(true, string.Empty, new List<ProjetoViewModel>());
+            return ActionResult.Create(true, "", UsuarioMapper.MapToProjetoViewModelList(usuario.Projetos));
         }
     }
 }

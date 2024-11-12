@@ -1,5 +1,4 @@
-﻿using AutoBogus;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TaskManager.Domain.Entitys;
 using TaskManager.Domain.Enuns;
 using TaskManager.Infrastructure.Interfaces;
@@ -22,7 +21,26 @@ namespace TaskManager.Infrastructure.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Usuario>().Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
+            //modelBuilder.Entity<Usuario>(entity =>
+            //{
+            //    entity.HasKey(e => e.Id);
+            //    entity.Property(e => e.Nome).IsRequired().HasMaxLength(100);
+            //    entity.Property(e => e.Funcao).IsRequired(); // Configuração do relacionamento one-to-many
+            //    entity.HasMany(u => u.Projetos).WithOne(p => p.Responsavel).HasForeignKey(p => p.ResponsavelId);
+            //});
+
+
             modelBuilder.Entity<Projeto>().Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
+            //modelBuilder.Entity<Projeto>(entity =>
+            //{
+            //    entity.HasKey(e => e.Id);
+            //    entity.Property(e => e.Titulo).IsRequired().HasMaxLength(200); // Configuração do relacionamento many-to-one
+            //    entity.HasOne(p => p.Responsavel).WithMany(u => u.Projetos).HasForeignKey(p => p.ResponsavelId);
+            //});
+
+
+            //modelBuilder.Entity<Projeto>().HasOne(p => p.Responsavel).WithMany(u => u.Projetos).HasForeignKey(p => p.ResponsavelId);
+
             modelBuilder.Entity<Tarefa>().Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
             modelBuilder.Entity<TarefaComentario>().Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
             modelBuilder.Entity<TarefaHistorico>().Property(e => e.Id).ValueGeneratedOnAdd().IsRequired();
@@ -32,11 +50,11 @@ namespace TaskManager.Infrastructure.Context
         {
             if (!Usuarios.Any())
             {
-                List<Usuario> usuarios = new List<Usuario> { 
-                    new Usuario("João Silva", Funcao.Desenvolvedor), 
-                    new Usuario("Ana Santos", Funcao.Gerente), 
-                    new Usuario("Carlos Oliveira", Funcao.Desenvolvedor), 
-                    new Usuario("Maria Souza", Funcao.Gerente), 
+                List<Usuario> usuarios = new List<Usuario> {
+                    new Usuario("João Silva", Funcao.Desenvolvedor),
+                    new Usuario("Ana Santos", Funcao.Gerente),
+                    new Usuario("Carlos Oliveira", Funcao.Desenvolvedor),
+                    new Usuario("Maria Souza", Funcao.Gerente),
                     new Usuario("Paulo Lima", Funcao.Desenvolvedor) };
                 Usuarios.AddRange(usuarios);
                 SaveChanges();
@@ -44,11 +62,11 @@ namespace TaskManager.Infrastructure.Context
 
             if (!Projetos.Any())
             {
-                List<Projeto> projetos = new List<Projeto> { new Projeto("Sistema de Gerenciamento", Usuarios.ElementAtOrDefault(0)), // João Silva
-                                                             new Projeto("Aplicativo de Vendas", Usuarios.ElementAtOrDefault(0)), // Ana Santos
-                                                             new Projeto("Website Corporativo", Usuarios.ElementAtOrDefault(0)), // Carlos Oliveira
-                                                             new Projeto("Portal de Serviços", Usuarios.ElementAtOrDefault(0)), // Maria Souza
-                                                             new Projeto("Aplicativo Mobile", Usuarios.ElementAtOrDefault(0)) }; // Paulo Lima
+                List<Projeto> projetos = new List<Projeto> { new Projeto("Sistema de Gerenciamento", Usuarios.ElementAtOrDefault(0).Id), // João Silva
+                                                             new Projeto("Aplicativo de Vendas", Usuarios.ElementAtOrDefault(0).Id), // Ana Santos
+                                                             new Projeto("Website Corporativo", Usuarios.ElementAtOrDefault(0).Id), // Carlos Oliveira
+                                                             new Projeto("Portal de Serviços", Usuarios.ElementAtOrDefault(0).Id), // Maria Souza
+                                                             new Projeto("Aplicativo Mobile", Usuarios.ElementAtOrDefault(0).Id) }; // Paulo Lima
                 Projetos.AddRange(projetos);
                 SaveChanges();
             }

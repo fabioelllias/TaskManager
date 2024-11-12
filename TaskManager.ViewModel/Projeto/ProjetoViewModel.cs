@@ -8,5 +8,6 @@ namespace TaskManager.ViewModel.Projeto
 {
     public class ProjetoViewModel
     {
+        public string Titulo { get; set; }
     }
 }

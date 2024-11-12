@@ -34,6 +34,18 @@ namespace TaskManager.Application
             return ActionResult.Create(true, string.Empty, null);
         }
 
+        public ActionResult IncluirComentarioNaTarefa(int projetoId, int usuarioId, int tarefaId, string comentario)
+        {
+            if (usuarioId == 0) _validator.AddError("usuarioId", "Usuário não informado.");
+            if (tarefaId == 0) _validator.AddError("tarefaId", "Tarefa não informada.");
+            if (string.IsNullOrEmpty(comentario)) _validator.AddError("comentario", "Comentário não informado.");
+
+            if (!_validator.IsValid)
+                return ActionResult.Create(false, "", _validator.GetErrors());
+
+            return ActionResult.Create(true, string.Empty, null);
+        }
+
         public ActionResult CriarProjeto(ProjetoViewModel projetoViewModel)
         {
             return ActionResult.Create(true, string.Empty, null);

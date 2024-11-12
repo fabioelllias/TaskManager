@@ -1,4 +1,6 @@
-﻿namespace TaskManager.Domain.Entitys
+﻿using System.Linq.Expressions;
+
+namespace TaskManager.Domain.Entitys
 {
     public class Projeto : BaseEntity
     {
@@ -6,16 +8,16 @@
 
         public Projeto()
         {
-            
+
         }
-        public Projeto(string titulo, Usuario responsavel)
+        public Projeto(string titulo, int usuarioId)
         {
             Titulo = titulo;
-            Responsavel = responsavel;
+            UsuarioId = usuarioId;
         }
 
         public string Titulo { get; private set; }
-        public Usuario Responsavel { get; private set; }
+        public int UsuarioId { get; private set; }
 
         public IReadOnlyCollection<Tarefa> Tarefas => _tarefas.AsReadOnly();
 
@@ -54,7 +56,7 @@
                 return;
             }
 
-            if(entity.Prioridade != tarefa.Prioridade)
+            if (entity.Prioridade != tarefa.Prioridade)
             {
                 AddError("tarefa.Prioridade", "Não é permitido alterar a prioridade de uma tarefa depois que ela foi criada.");
                 return;
@@ -68,10 +70,16 @@
             entity.AdicionarHistorico(null);
         }
 
-        //public static Expression<Func<Projeto, ICollection<Tarefa>>> TarefaMapping
-        //{
-        //    get { return c => c._tarefas; }
-        //}
+        public int TarefasConcluidas(int periodoEmDias)
+        {
+            return _tarefas.Count(t => t.Status == Enuns.Status.Concluida && 
+                                  t.DataVencimento >= DateTime.Now.AddDays(-periodoEmDias));
+        }
+
+        public static Expression<Func<Projeto, ICollection<Tarefa>>> TarefaMapping
+        {
+            get { return c => c._tarefas; }
+        }
 
     }
 }

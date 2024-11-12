@@ -69,6 +69,18 @@ namespace TaskManager.API.Controllers
         }
 
         /// <summary>
+        /// Comentários nas Tarefas
+        /// </summary>
+        /// <remarks>Incluir comentário em uma tarefa</remarks>
+        /// <param name="comentario"></param>
+        /// <returns></returns>
+        [HttpPatch, Route("{usuarioId}/tarefa/{tarefaId}/comentario")]
+        public async Task<IActionResult> PatchComentario([FromRoute] int projetoId,[FromRoute] int usuarioId, [FromRoute] int tarefaId, [FromBody] string comentario)
+        {
+            return Ok(_projetoApplication.IncluirComentarioNaTarefa(projetoId, usuarioId, tarefaId, comentario));
+        }
+
+        /// <summary>
         /// Remoçao de Projetos
         /// </summary>
         /// <remarks>Remover um projeto</remarks>
