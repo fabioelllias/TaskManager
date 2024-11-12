@@ -44,12 +44,20 @@ namespace TaskManager.Application
 
         public ActionResult IncluirComentarioNaTarefa(int projetoId, int usuarioId, int tarefaId, string comentario)
         {
-            if (usuarioId == 0) _validator.AddError("usuarioId", "Usuário não informado.");
-            if (tarefaId == 0) _validator.AddError("tarefaId", "Tarefa não informada.");
-            if (string.IsNullOrEmpty(comentario)) _validator.AddError("comentario", "Comentário não informado.");
+            var projeto = _projetoRepository.GetById(projetoId, "Tarefas");
+            if (projeto == null)
+                return ActionResult.Create(false, "Projeto não encontrado.", string.Empty);
 
-            if (!_validator.IsValid)
-                return ActionResult.Create(false, "", _validator.GetErrors());
+            var usuarioExiste = _usuarioRepository.GetAll().Any(item => item.Id == usuarioId);
+            if (!usuarioExiste)
+                return ActionResult.Create(false, "Usuário não encontrado.", null);
+
+            projeto.AdicionarComentario(tarefaId, usuarioId, comentario);
+
+            if (!projeto.IsValid)
+                return ActionResult.Create(false, "Operação não realizada.", projeto.GetErrors());
+
+            _projetoRepository.Save(projeto);          
 
             return ActionResult.Create(true, string.Empty, null);
         }

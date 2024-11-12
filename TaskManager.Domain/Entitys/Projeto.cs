@@ -47,7 +47,7 @@ namespace TaskManager.Domain.Entitys
         }
 
 
-        public void AdicionarComentario(int tarefa, string comentario)
+        public void AdicionarComentario(int tarefa, int usuario, string comentario)
         {
             var entity = _tarefas.SingleOrDefault(item => item.Id == tarefa);
             if (entity == null)
@@ -55,7 +55,10 @@ namespace TaskManager.Domain.Entitys
                 AddError("Tarefa", "Tarefa não encontrada.");
                 return;
             }
-            entity.AdicionarComentario(comentario);
+            entity.AdicionarComentario(comentario, usuario);
+
+            if (!entity.IsValid)
+                AddError(entity.GetErrors());
         }
 
         public void AtualizarTarefa(Tarefa tarefa)

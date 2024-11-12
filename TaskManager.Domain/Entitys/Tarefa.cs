@@ -54,9 +54,16 @@ namespace TaskManager.Domain.Entitys
             this.Descricao = descricao;
         }
 
-        internal void AdicionarComentario(string comentario)
+        internal void AdicionarComentario(string comentario, int usuario)
         {
-            _comentarios.Add(new TarefaComentario(comentario));
+            if (string.IsNullOrEmpty(comentario))
+            {
+                AddError("comentario", "Comentário da tarefa não informado.");
+                return;
+            }
+
+            _comentarios.Add(new TarefaComentario(comentario, usuario));
+            _historico.Add(new TarefaHistorico($"Comentário incluido:{comentario}", usuario, DateTime.Now.ToUniversalTime()));
         }
 
         internal void AdicionarHistorico(TarefaHistorico historico)
