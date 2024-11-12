@@ -8,11 +8,9 @@ namespace TaskManager.Application
 {
     public class UsuarioApplication : IUsuarioApplication
     {
-        private readonly IValidator _validator;
         private readonly IRepository<Usuario> _usuarioRepository;
         public UsuarioApplication(IValidator validator, IRepository<Usuario> usuarioRepository)
         {
-            _validator = validator;
             _usuarioRepository = usuarioRepository;
         }
         public ActionResult DesempenhoNoPeriodo(int gerenteId, int numeroDias)

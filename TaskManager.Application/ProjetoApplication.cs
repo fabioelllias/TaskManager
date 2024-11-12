@@ -4,7 +4,6 @@ using TaskManager.Domain.Entitys;
 using TaskManager.Domain.Enuns;
 using TaskManager.Infrastructure.Interfaces;
 using TaskManager.Shared;
-using TaskManager.Shared.Interfaces;
 using TaskManager.ViewModel.Projeto;
 using TaskManager.ViewModel.Tarefa;
 
@@ -12,13 +11,11 @@ namespace TaskManager.Application
 {
     public class ProjetoApplication : IProjetoApplication
     {
-        private readonly IValidator _validator;
         private readonly IRepository<Projeto> _projetoRepository;
         private readonly IRepository<Usuario> _usuarioRepository;
 
-        public ProjetoApplication(IValidator validator, IRepository<Projeto> projetoRepository, IRepository<Usuario> usuarioRepository)
+        public ProjetoApplication(IRepository<Projeto> projetoRepository, IRepository<Usuario> usuarioRepository)
         {
-            _validator = validator;
             _projetoRepository = projetoRepository;
             _usuarioRepository = usuarioRepository;
         }
