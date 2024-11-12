@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TaskManager.Application.Interfaces;
 using TaskManager.ViewModel.Projeto;
+using TaskManager.ViewModel.Tarefa;
 
 namespace TaskManager.API.Controllers
 {
@@ -49,7 +50,7 @@ namespace TaskManager.API.Controllers
         /// <param name="tarefaViewModel"></param>
         /// <returns></returns>
         [HttpPost, Route("{projetoId}/tarefa")]
-        public async Task<IActionResult> PostTarefa([FromRoute] int projetoId, [FromBody] TarefaAtualizarViewModel tarefaViewModel)
+        public async Task<IActionResult> PostTarefa([FromRoute] int projetoId, [FromBody] TarefaCriarViewModel tarefaViewModel)
         {
             return Ok(_projetoApplication.CriarTarefa(projetoId, tarefaViewModel));
         }

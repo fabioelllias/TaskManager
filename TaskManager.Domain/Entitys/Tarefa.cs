@@ -15,6 +15,13 @@ namespace TaskManager.Domain.Entitys
             Status = status;
             Prioridade = prioridade;
             ProjetoId = projetoId;
+
+            if (string.IsNullOrEmpty(Titulo)) AddError("Titulo", "Titulo não informado.");
+            if (string.IsNullOrEmpty(Descricao)) AddError("Descricao", "Descrição não informada.");
+            if (DataVencimento == DateTime.MinValue) AddError("DataVencimento", "Data de vencimento não informada.");
+            if (!Enum.IsDefined(typeof(Status), status)) AddError("Status", "Status informado é inválido.");
+            if (!Enum.IsDefined(typeof(Prioridade), prioridade)) AddError("Prioridade", "Prioridade informada é inválida.");
+
         }
 
         public string Titulo { get; private set; }
@@ -29,7 +36,7 @@ namespace TaskManager.Domain.Entitys
 
         internal void AddDataVencimento(DateTime dataVencimento)
         {
-            if(dataVencimento < DateTime.Now)
+            if (dataVencimento < DateTime.Now)
             {
                 AddError("dataVencimento", "Data de vencimento não informada.");
                 return;

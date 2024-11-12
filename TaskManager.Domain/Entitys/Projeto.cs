@@ -36,8 +36,16 @@ namespace TaskManager.Domain.Entitys
                 AddError("tarefa", "O limite de tarefas por projeto foi atingido: 20");
                 return;
             }
+
+            if (!tarefa.IsValid)
+            {
+                base.AddError(tarefa.GetErrors());
+                return;
+            }
+
             _tarefas.Add(tarefa);
         }
+
 
         public void AdicionarComentario(int tarefa, string comentario)
         {
@@ -75,13 +83,25 @@ namespace TaskManager.Domain.Entitys
 
         public int TarefasConcluidas(int periodoEmDias)
         {
-            return _tarefas.Count(t => t.Status == Enuns.Status.Concluida && 
+            return _tarefas.Count(t => t.Status == Enuns.Status.Concluida &&
                                   t.DataVencimento >= DateTime.Now.AddDays(-periodoEmDias));
         }
 
         public bool PossuiTarefasPendentes()
         {
             return _tarefas.Any(item => item.Status == Enuns.Status.Pendente);
+        }
+
+        public void RemoverTarefa(int tarefaId)
+        {
+            var tarefa = _tarefas.SingleOrDefault(item => item.Id == tarefaId);
+            if (tarefa == null)
+            {
+                AddError("tarefaId", "Tarefa não encontrada.");
+                return;
+            }
+
+            _tarefas.Remove(tarefa);
         }
 
         public static Expression<Func<Projeto, ICollection<Tarefa>>> TarefaMapping

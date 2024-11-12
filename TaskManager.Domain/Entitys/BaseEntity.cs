@@ -22,9 +22,11 @@ namespace TaskManager.Domain.Entitys
             return _errors;
         }
 
-        public void SetErros(Dictionary<string, string> errors)
+      
+        internal void AddError(Dictionary<string, string> dictionary)
         {
-            _errors = errors;
+            foreach (var error in dictionary)
+                AddError(error.Key, error.Value);
         }
     }
 }

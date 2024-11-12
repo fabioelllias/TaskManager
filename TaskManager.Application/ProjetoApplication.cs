@@ -5,6 +5,7 @@ using TaskManager.Domain.Enuns;
 using TaskManager.Infrastructure.Interfaces;
 using TaskManager.Shared.Interfaces;
 using TaskManager.ViewModel.Projeto;
+using TaskManager.ViewModel.Tarefa;
 
 namespace TaskManager.Application
 {
@@ -69,8 +70,26 @@ namespace TaskManager.Application
             return ActionResult.Create(true, string.Empty, ProjetoMapper.MapToProjetoViewModel(projeto));
         }
 
-        public ActionResult CriarTarefa(int projetoId, TarefaAtualizarViewModel tarefaViewModel)
+        public ActionResult CriarTarefa(int projetoId, TarefaCriarViewModel tarefaViewModel)
         {
+            var projeto = _projetoRepository.GetById(projetoId, "Tarefas");
+            if (projeto == null)
+                return ActionResult.Create(false, "Projeto não encontrado.", string.Empty);
+
+            projeto.AdicionarTarefa(new Tarefa(
+             tarefaViewModel.Titulo,
+             tarefaViewModel.Descricao,
+             tarefaViewModel.DataVencimento,
+             (Status)tarefaViewModel.Status,
+             (Prioridade)tarefaViewModel.Prioridade,
+             projeto.Id));
+
+            if (!projeto.IsValid)
+                return ActionResult.Create(false, "Operação não concluída.", projeto.GetErrors());
+
+
+            _projetoRepository.Save(projeto);
+
             return ActionResult.Create(true, string.Empty, null);
         }
 
@@ -90,6 +109,19 @@ namespace TaskManager.Application
 
         public ActionResult ExcluirTarefa(int projetoId, int tarefaId)
         {
+            var projeto = _projetoRepository.GetById(projetoId, "Tarefas");
+            if (projeto == null)
+                return ActionResult.Create(false, "Projeto não encontrado.", string.Empty);
+
+            projeto.RemoverTarefa(tarefaId);
+
+
+            if(!projeto.IsValid)
+                return ActionResult.Create(false, "Exclusão não permitida.", projeto.GetErrors());
+
+            _projetoRepository.Save(projeto);
+
+
             return ActionResult.Create(true, string.Empty, null);
         }
 
